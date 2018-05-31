@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,12 +14,15 @@ import com.udacity.sandwichclub.utils.JsonUtils;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
 
-    TextView origin;
-    TextView description;
-    TextView ingredients;
-    TextView alsoKnownAs;
+    @BindView(R.id.origin_tv) TextView origin;
+    @BindView(R.id.description_tv)TextView description;
+    @BindView(R.id.ingredients_tv)TextView ingredients;
+    @BindView(R.id.also_known_tv)TextView alsoKnownAs;
 
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
@@ -27,6 +31,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -63,7 +68,6 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
 
         origin.setText(sandwich.getPlaceOfOrigin());
 
@@ -77,9 +81,7 @@ public class DetailActivity extends AppCompatActivity {
         }
         //display alsoKnownAs array
         List<String> alsoKnownAsList = sandwich.getAlsoKnownAs();
-        if (alsoKnownAsList == null)
-            alsoKnownAs.setText("-");
-        else
+        if (alsoKnownAsList != null)
             for (int i=0;i<alsoKnownAsList.size(); i++)
             {
                 alsoKnownAs.append(alsoKnownAsList.get(i) + " | ");
@@ -98,14 +100,5 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
 
-        origin      = (TextView) findViewById(R.id.origin_tv);
-        description = (TextView) findViewById(R.id.description_tv);
-        ingredients = (TextView) findViewById(R.id.ingredients_tv);
-        alsoKnownAs = (TextView) findViewById(R.id.also_known_tv);
-
-
-
-    }
 }
